@@ -46,15 +46,16 @@ namespace WebAPI.Controllers
             Persons.Where(a => a.id == item.id).First().FirstName = item.FirstName;
             Persons.Where(a => a.id == item.id).First().LastName = item.LastName;
 
-            return Persons.Where(a => a.id == item.id);
+            //return Persons.Where(a => a.id == item.id);
+            return Persons;
         }
 
         [HttpDelete]
-        public IHttpActionResult DelPerson([FromBody] Person item)
+        public HttpResponseMessage DelPerson([FromBody] Person item)
         {
             Persons.RemoveAt(item.id);
 
-            return Content(HttpStatusCode.NoContent, "");
+            return Request.CreateResponse(HttpStatusCode.NoContent);
         }
     }
 }

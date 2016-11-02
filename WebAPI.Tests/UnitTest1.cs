@@ -7,6 +7,7 @@ using WebAPI.Models;
 using System.Web.Http.Results;
 using System.Web.Http;
 using System.Net;
+using System.Net.Http;
 
 namespace WebAPI.Tests
 {
@@ -54,17 +55,19 @@ namespace WebAPI.Tests
             var controller = new PersonsController();
 
             var result = controller.UpdatePerson( new Person { id = 2, FirstName = "Updated", LastName = "Updated" }) as List<Person>;
-            Assert.AreNotEqual(testPersons[1].FirstName, result.Find(a => a.id == 2).FirstName);
+            Assert.AreNotEqual(testPersons.Find(a => a.id == 2).FirstName, result.Find(a => a.id == 2).FirstName);
         }
 
         [TestMethod]
         public void DelPerson_test()
         {
             var controller = new PersonsController();
+            controller.Configuration = new HttpConfiguration();
+            controller.Request = new HttpRequestMessage();
 
-            var result = controller.DelPerson(new Person { id = 1, FirstName = "", LastName = "" });
+            HttpResponseMessage result = controller.DelPerson(new Person { id = 1, FirstName = "", LastName = "" });
 
-            Assert.AreEqual("", result.ToString());
+            Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode);
         }
     }
 }
