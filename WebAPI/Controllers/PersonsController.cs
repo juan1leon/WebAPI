@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IEnumerable<Person> GetAllPersons([FromBody] Person item)
+        public IEnumerable<Person> AddPersons([FromBody] Person item)
         {
             Persons.Add(item);
 
@@ -43,10 +43,10 @@ namespace WebAPI.Controllers
         [HttpPut]
         public IEnumerable<Person> UpdatePerson([FromBody] Person item)
         {
-            Persons[item.id].FirstName = item.FirstName;
-            Persons[item.id].LastName = item.LastName;
+            Persons.Where(a => a.id == item.id).First().FirstName = item.FirstName;
+            Persons.Where(a => a.id == item.id).First().LastName = item.LastName;
 
-            return Persons;
+            return Persons.Where(a => a.id == item.id);
         }
 
         [HttpDelete]
